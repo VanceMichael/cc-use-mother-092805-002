@@ -20,6 +20,8 @@
 
 `contracts/context.schema.json` 描述资料结构，`fixtures/context.json` 提供不含真实身份信息的示例，`src/news_context_002.py` 负责读取和校验这些资料。
 
+`src/sales_registry.py` 是销售管理后端记录：以追加式台账保存地块、楼栋、房屋、方案、配套、测绘、检查整改、销售批次与合同附件的版本关系，签约时冻结公示并可与房屋、合同互相核对，支持按历史日期还原。规则对应关系见 `docs/sales-records.md`。
+
 ## 开发命令
 
 运行测试：
