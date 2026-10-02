@@ -20,6 +20,19 @@
 
 `contracts/context.schema.json` 描述资料结构，`fixtures/context.json` 提供不含真实身份信息的示例，`src/news_context_002.py` 负责读取和校验这些资料。
 
+## 销售管理后端
+
+`src/housing/` 实现商品住房销售管理后端：地块、楼栋、房屋、建设方案、公共配套、
+测绘成果、检查整改、销售批次与合同附件之间保持明确版本关系；签约时冻结购房人
+看到的公示内容，并支持按历史日期还原。详见 [`docs/backend-model.md`](docs/backend-model.md)。
+
+- 只增事件流 + 哈希链（`src/housing/events.py`），历史不可改写
+- 重复报送沿用原审批结果，内容变化形成新的待审版本
+- 预售/现售各自前置条件；检查人员只确认本人负责事项；整改结论仅区级可批准
+- 方案或面积变化只作用于未签约房源，已签约部分走补充协议/整改/争议处理
+- 楼栋资料冲突只暂停关联房源，不阻断其他楼栋
+- 到期整改与待验收事项持久保存，`house_record(房屋, as_of=日期)` 可还原历史
+
 ## 开发命令
 
 运行测试：
@@ -31,7 +44,7 @@ python3 -m unittest discover -s tests -v
 编译检查：
 
 ```bash
-python3 -m compileall -q src
+python3 -m compileall -q src tests
 ```
 
 两条命令只读取仓库内文件，不需要连接外部业务系统。
